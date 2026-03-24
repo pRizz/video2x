@@ -76,6 +76,22 @@ configure-macos-vendored-debug:
 build-macos-vendored-debug:
     cmake --build --preset macos-vendored-debug
 
+# Canonical macOS runtime validation surface backed by a repo-owned script.
+[unix]
+[group('test')]
+smoke-macos:
+    ./scripts/macos_runtime_validation.sh smoke
+
+[unix]
+[group('test')]
+list-devices-macos:
+    ./scripts/macos_runtime_validation.sh list-devices
+
+[unix]
+[group('test')]
+sample-macos-realesrgan:
+    ./scripts/macos_runtime_validation.sh sample-realesrgan
+
 [windows]
 [group('build')]
 debug:
