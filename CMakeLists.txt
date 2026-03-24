@@ -108,6 +108,12 @@ set_target_properties(libvideo2x PROPERTIES
     CXX_EXTENSIONS OFF
 )
 
+if(APPLE)
+    set_target_properties(libvideo2x PROPERTIES
+        INSTALL_RPATH "@loader_path"
+    )
+endif()
+
 # Include directories for the shared library
 target_include_directories(libvideo2x PRIVATE
     "${CMAKE_CURRENT_BINARY_DIR}"
@@ -385,6 +391,26 @@ install(TARGETS libvideo2x
     INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/libvideo2x"
 )
 
+if(APPLE)
+    install(CODE [[
+        set(video2x_installed_lib "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/libvideo2x.dylib")
+        if(EXISTS "${video2x_installed_lib}")
+            execute_process(
+                COMMAND /usr/bin/otool -l "${video2x_installed_lib}"
+                OUTPUT_VARIABLE video2x_lib_load_commands
+                RESULT_VARIABLE video2x_lib_otool_status
+            )
+            string(FIND "${video2x_lib_load_commands}" "path @loader_path (offset" video2x_lib_rpath_index)
+            if(video2x_lib_otool_status EQUAL 0 AND video2x_lib_rpath_index EQUAL -1)
+                execute_process(
+                    COMMAND /usr/bin/install_name_tool -add_rpath "@loader_path" "${video2x_installed_lib}"
+                    COMMAND_ERROR_IS_FATAL ANY
+                )
+            endif()
+        endif()
+    ]])
+endif()
+
 # Install the header files from the include directory
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/libvideo2x/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/libvideo2x"
@@ -453,6 +479,12 @@ if(VIDEO2X_BUILD_CLI)
         OUTPUT_NAME video2x
         CXX_EXTENSIONS OFF
     )
+
+    if(APPLE)
+        set_target_properties(video2x PROPERTIES
+            INSTALL_RPATH "@executable_path/../lib"
+        )
+    endif()
 
     # Include directories for the executable
     target_include_directories(video2x PRIVATE
@@ -529,6 +561,26 @@ if(VIDEO2X_BUILD_CLI)
 
     # Install the video2x executable
     install(TARGETS video2x RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+
+    if(APPLE)
+        install(CODE [[
+            set(video2x_installed_cli "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/video2x")
+            if(EXISTS "${video2x_installed_cli}")
+                execute_process(
+                    COMMAND /usr/bin/otool -l "${video2x_installed_cli}"
+                    OUTPUT_VARIABLE video2x_cli_load_commands
+                    RESULT_VARIABLE video2x_cli_otool_status
+                )
+                string(FIND "${video2x_cli_load_commands}" "path @executable_path/../lib (offset" video2x_cli_rpath_index)
+                if(video2x_cli_otool_status EQUAL 0 AND video2x_cli_rpath_index EQUAL -1)
+                    execute_process(
+                        COMMAND /usr/bin/install_name_tool -add_rpath "@executable_path/../lib" "${video2x_installed_cli}"
+                        COMMAND_ERROR_IS_FATAL ANY
+                    )
+                endif()
+            endif()
+        ]])
+    endif()
 
     # Install the Boost DLL
     if(WIN32 AND NOT VIDEO2X_USE_EXTERNAL_BOOST)
