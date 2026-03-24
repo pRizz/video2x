@@ -12,7 +12,7 @@ This roadmap turns the current Linux/Windows-skewed Video2X fork into a project 
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Build Surface Foundation** - Make `just` and CMake presets the canonical contributor workflow
+- [x] **Phase 1: Build Surface Foundation** - Make `just` and CMake presets the canonical contributor workflow
 - [ ] **Phase 2: macOS Toolchain Bring-Up** - Add explicit Apple Silicon dependency validation and build paths
 - [ ] **Phase 3: Runtime Smoke and GPU Proof** - Prove the built macOS binary runs and reaches the intended GPU path
 - [ ] **Phase 4: Documentation and Strategy Publication** - Publish first-class macOS docs and the initial GPU strategy
@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01: Audit and normalize the current `.justfile` and raw build entrypoints
 - [x] 01-02: Introduce shared CMake presets for supported macOS build variants and dependency modes
-- [ ] 01-03: Align `just` command discovery and repo guidance with the preset-driven workflow
+- [x] 01-03: Align `just` command discovery and repo guidance with the preset-driven workflow
 
 ### Phase 2: macOS Toolchain Bring-Up
 **Goal**: Make Apple Silicon dependency setup and macOS build execution explicit and reproducible.
@@ -103,7 +103,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Build Surface Foundation | 2/3 | In Progress | 2026-03-24 |
+| 1. Build Surface Foundation | 3/3 | Complete | 2026-03-24 |
 | 2. macOS Toolchain Bring-Up | 0/3 | Not started | - |
 | 3. Runtime Smoke and GPU Proof | 0/3 | Not started | - |
 | 4. Documentation and Strategy Publication | 0/3 | Not started | - |
