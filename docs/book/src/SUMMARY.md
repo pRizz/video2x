@@ -19,7 +19,7 @@
 # Running
 
 - [Running](running/README.md)
-  - [Desktop](running/desktop.md)]
+  - [Desktop](running/desktop.md)
   - [Command Line](running/command-line.md)
   - [Container](running/container.md)
 
