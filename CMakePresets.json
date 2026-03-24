@@ -1,0 +1,114 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 27,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "macos-arm64-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/build/install/${presetName}",
+        "CMAKE_OSX_ARCHITECTURES": "arm64",
+        "VIDEO2X_ENABLE_NATIVE": "ON"
+      }
+    },
+    {
+      "name": "macos-system-base",
+      "hidden": true,
+      "inherits": "macos-arm64-base",
+      "cacheVariables": {
+        "VIDEO2X_USE_EXTERNAL_BOOST": "ON",
+        "VIDEO2X_USE_EXTERNAL_NCNN": "ON",
+        "VIDEO2X_USE_EXTERNAL_SPDLOG": "ON"
+      }
+    },
+    {
+      "name": "macos-vendored-base",
+      "hidden": true,
+      "inherits": "macos-arm64-base",
+      "cacheVariables": {
+        "VIDEO2X_USE_EXTERNAL_BOOST": "OFF",
+        "VIDEO2X_USE_EXTERNAL_NCNN": "OFF",
+        "VIDEO2X_USE_EXTERNAL_SPDLOG": "OFF"
+      }
+    },
+    {
+      "name": "macos-system-release",
+      "displayName": "macOS arm64 system Release",
+      "description": "Release build using system-provided dependencies on Apple Silicon macOS.",
+      "inherits": "macos-system-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "macos-system-debug",
+      "displayName": "macOS arm64 system Debug",
+      "description": "Debug build using system-provided dependencies on Apple Silicon macOS.",
+      "inherits": "macos-system-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "macos-vendored-release",
+      "displayName": "macOS arm64 vendored Release",
+      "description": "Release build using the repo vendored dependency fallback on Apple Silicon macOS.",
+      "inherits": "macos-vendored-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "macos-vendored-debug",
+      "displayName": "macOS arm64 vendored Debug",
+      "description": "Debug build using the repo vendored dependency fallback on Apple Silicon macOS.",
+      "inherits": "macos-vendored-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "macos-system-release",
+      "displayName": "Build macOS arm64 system Release",
+      "configurePreset": "macos-system-release",
+      "targets": [
+        "install"
+      ]
+    },
+    {
+      "name": "macos-system-debug",
+      "displayName": "Build macOS arm64 system Debug",
+      "configurePreset": "macos-system-debug",
+      "targets": [
+        "install"
+      ]
+    },
+    {
+      "name": "macos-vendored-release",
+      "displayName": "Build macOS arm64 vendored Release",
+      "configurePreset": "macos-vendored-release",
+      "targets": [
+        "install"
+      ]
+    },
+    {
+      "name": "macos-vendored-debug",
+      "displayName": "Build macOS arm64 vendored Debug",
+      "configurePreset": "macos-vendored-debug",
+      "targets": [
+        "install"
+      ]
+    }
+  ]
+}
