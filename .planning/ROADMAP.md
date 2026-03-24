@@ -13,7 +13,7 @@ This roadmap turns the current Linux/Windows-skewed Video2X fork into a project 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Build Surface Foundation** - Make `just` and CMake presets the canonical contributor workflow
-- [ ] **Phase 2: macOS Toolchain Bring-Up** - Add explicit Apple Silicon dependency validation and build paths
+- [x] **Phase 2: macOS Toolchain Bring-Up** - Add explicit Apple Silicon dependency validation and build paths
 - [ ] **Phase 3: Runtime Smoke and GPU Proof** - Prove the built macOS binary runs and reaches the intended GPU path
 - [ ] **Phase 4: Documentation and Strategy Publication** - Publish first-class macOS docs and the initial GPU strategy
 - [ ] **Phase 5: Optimization Gate** - Decide what deeper macOS performance or backend work is actually justified
@@ -46,9 +46,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Implement macOS doctor/bootstrap checks for Xcode tooling, Homebrew dependencies, Vulkan SDK, and environment state
-- [ ] 02-02: Add Apple Silicon Release and Debug build flows backed by the shared presets
-- [ ] 02-03: Validate the clean-checkout contributor experience and fix mismatches between presets, recipes, and local dependency modes
+- [x] 02-01: Implement macOS doctor/bootstrap checks for Xcode tooling, Homebrew dependencies, Vulkan SDK, and environment state
+- [x] 02-02: Add Apple Silicon Release and Debug build flows backed by the shared presets
+- [x] 02-03: Validate the clean-checkout contributor experience and fix mismatches between presets, recipes, and local dependency modes
 
 ### Phase 3: Runtime Smoke and GPU Proof
 **Goal**: Prove that the macOS build is not only compilable but usable at runtime on Apple Silicon.
@@ -104,7 +104,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Build Surface Foundation | 3/3 | Complete | 2026-03-24 |
-| 2. macOS Toolchain Bring-Up | 0/3 | Not started | - |
+| 2. macOS Toolchain Bring-Up | 3/3 | Complete | 2026-03-24 |
 | 3. Runtime Smoke and GPU Proof | 0/3 | Not started | - |
 | 4. Documentation and Strategy Publication | 0/3 | Not started | - |
 | 5. Optimization Gate | 0/3 | Not started | - |

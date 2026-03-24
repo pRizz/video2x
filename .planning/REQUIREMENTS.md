@@ -8,12 +8,12 @@
 ### Bootstrap
 
 - [x] **BOOT-01**: Contributor can discover the canonical macOS workflow from repo docs and the project's `just` command surface
-- [ ] **BOOT-02**: Contributor can validate required macOS prerequisites, including Xcode tooling, package dependencies, Vulkan SDK availability, and required environment state, with one command
+- [x] **BOOT-02**: Contributor can validate required macOS prerequisites, including Xcode tooling, package dependencies, Vulkan SDK availability, and required environment state, with one command
 
 ### Build
 
-- [ ] **BLD-01**: Contributor can configure and build a Release macOS Apple Silicon build from a clean checkout with one or two `just` commands
-- [ ] **BLD-02**: Contributor can configure and build a Debug macOS Apple Silicon build without manually assembling raw CMake flags
+- [x] **BLD-01**: Contributor can configure and build a Release macOS Apple Silicon build from a clean checkout with one or two `just` commands
+- [x] **BLD-02**: Contributor can configure and build a Debug macOS Apple Silicon build without manually assembling raw CMake flags
 - [x] **BLD-03**: Shared CMake presets define the supported macOS build variants and dependency modes used by the fork
 
 ### Validation
@@ -57,9 +57,9 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | BOOT-01 | Phase 1 | Complete |
-| BOOT-02 | Phase 2 | Pending |
-| BLD-01 | Phase 2 | Pending |
-| BLD-02 | Phase 2 | Pending |
+| BOOT-02 | Phase 2 | Complete |
+| BLD-01 | Phase 2 | Complete |
+| BLD-02 | Phase 2 | Complete |
 | BLD-03 | Phase 1 | Complete |
 | VAL-01 | Phase 3 | Pending |
 | VAL-02 | Phase 3 | Pending |
@@ -77,4 +77,4 @@
 
 ---
 *Requirements defined: 2026-03-24*
-*Last updated: 2026-03-24 after Phase 1 verification*
+*Last updated: 2026-03-24 after Phase 2 verification*
