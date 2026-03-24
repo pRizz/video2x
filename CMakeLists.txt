@@ -45,7 +45,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
         add_link_options(/LTCG /OPT:REF /OPT:ICF)
     elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
         add_compile_options(-O3 -ffunction-sections -fdata-sections)
-        add_link_options(-Wl,-s -flto -Wl,--gc-sections)
+        if(APPLE)
+            add_link_options(-flto -Wl,-dead_strip)
+        else()
+            add_link_options(-Wl,-s -flto -Wl,--gc-sections)
+        endif()
     endif()
 endif()
 
@@ -152,10 +156,17 @@ else()
     # Apply include directories and libraries directly to the target
     target_include_directories(libvideo2x SYSTEM PRIVATE
         ${libavcodec_INCLUDE_DIRS}
-        ${libavfilter_LIBRARIES}
+        ${libavfilter_INCLUDE_DIRS}
         ${libavformat_INCLUDE_DIRS}
         ${libavutil_INCLUDE_DIRS}
         ${libswscale_INCLUDE_DIRS}
+    )
+    target_link_directories(libvideo2x PRIVATE
+        ${libavcodec_LIBRARY_DIRS}
+        ${libavfilter_LIBRARY_DIRS}
+        ${libavformat_LIBRARY_DIRS}
+        ${libavutil_LIBRARY_DIRS}
+        ${libswscale_LIBRARY_DIRS}
     )
     target_link_libraries(libvideo2x PRIVATE
         ${libavcodec_LIBRARIES}
@@ -475,6 +486,10 @@ if(VIDEO2X_BUILD_CLI)
         target_include_directories(video2x SYSTEM PRIVATE
             ${libavcodec_INCLUDE_DIRS}
             ${libavutil_INCLUDE_DIRS}
+        )
+        target_link_directories(video2x PRIVATE
+            ${libavcodec_LIBRARY_DIRS}
+            ${libavutil_LIBRARY_DIRS}
         )
         target_link_libraries(video2x PRIVATE ${libavcodec_LIBRARIES} ${libavutil_LIBRARIES})
     endif()
