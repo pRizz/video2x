@@ -2,6 +2,26 @@
 
 Thank you for considering contributing to Video2X. This document outlines the guidelines for contributing to ensure a smooth and effective development process. Should you have any questions or require assistance, please do not hesitate to reach out to the project maintainers.
 
+## Canonical macOS Build Workflow for This Fork
+
+For source builds, this fork currently supports the latest macOS on Apple Silicon. The contributor-facing front door is `just`; the recipes forward to the shared configure and build presets in `CMakePresets.json`.
+
+Use one configure command and one build command from the repo root:
+
+```bash
+just configure-macos-system-release
+just build-macos-system-release
+```
+
+Use the matching `*-debug` commands for Debug builds. If you need the vendored dependency fallback instead of system packages, swap `system` for `vendored` in the command names:
+
+```bash
+just configure-macos-vendored-release
+just build-macos-vendored-release
+```
+
+If you need to inspect or reproduce the underlying CMake invocation, use the same preset names directly with `cmake --preset <name>` and `cmake --build --preset <name>`. Later phases will expand prerequisite and platform-specific troubleshooting; this document keeps the current build surface intentionally thin and aligned with the implemented preset-backed workflow.
+
 ## Commit Messages
 
 Commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. This helps maintain a consistent and informative project history.

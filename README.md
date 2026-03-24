@@ -80,6 +80,21 @@ Video2X packages are available for the Linux distros listed below. A universal A
   - [archlinuxcn/video2x-qt6-git](https://github.com/archlinuxcn/repo/tree/master/archlinuxcn/video2x-qt6-git)
 - Other distros: `Video2X-x86_64.AppImage` on the [releases page](https://github.com/k4yt3x/video2x/releases/latest).
 
+## 🍎 Build This Fork on macOS (Apple Silicon)
+
+This fork currently supports source builds on the latest macOS running on Apple Silicon. The canonical contributor workflow is the thin `just` entrypoint backed by shared CMake presets, so contributors do not need to reconstruct raw `cmake -D...` invocations by hand.
+
+Start from the repo root with one configure command and one build command:
+
+```bash
+just configure-macos-system-release
+just build-macos-system-release
+```
+
+If you need the vendored dependency fallback, use `configure-macos-vendored-release` and `build-macos-vendored-release` instead. Debug variants are also available via the matching `*-debug` commands. These `just` recipes forward directly to the shared presets in `CMakePresets.json`.
+
+For the contributor-facing workflow surface, see [CONTRIBUTING.md](CONTRIBUTING.md). The docs book's build index also calls out this current macOS boundary while a fuller first-class macOS guide is deferred to a later phase.
+
 ## [📦 Container Image](https://docs.video2x.org/running/container.html)
 
 Video2X [container images](https://github.com/k4yt3x/video2x/pkgs/container/video2x) are available on the GitHub Container Registry for easy deployment on Linux and macOS. If you already have Docker/Podman installed, only one command is needed to start upscaling a video. For more information on how to use Video2X's Docker image, please refer to the [documentation](https://docs.video2x.org/running/container.html).
