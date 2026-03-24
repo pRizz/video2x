@@ -7,7 +7,7 @@
 
 ### Bootstrap
 
-- [ ] **BOOT-01**: Contributor can discover the canonical macOS workflow from repo docs and the project's `just` command surface
+- [x] **BOOT-01**: Contributor can discover the canonical macOS workflow from repo docs and the project's `just` command surface
 - [ ] **BOOT-02**: Contributor can validate required macOS prerequisites, including Xcode tooling, package dependencies, Vulkan SDK availability, and required environment state, with one command
 
 ### Build
@@ -56,7 +56,7 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| BOOT-01 | Phase 1 | Pending |
+| BOOT-01 | Phase 1 | Complete |
 | BOOT-02 | Phase 2 | Pending |
 | BLD-01 | Phase 2 | Pending |
 | BLD-02 | Phase 2 | Pending |

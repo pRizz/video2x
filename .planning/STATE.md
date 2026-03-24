@@ -10,16 +10,16 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 ## Current Position
 
 Phase: 1 of 5 (Build Surface Foundation)
-Plan: 1 of 3 in current phase
+Plan: 3 of 3 in current phase
 Status: In progress
-Last activity: 2026-03-24 - Completed plan 01-02 and added shared macOS CMake presets
+Last activity: 2026-03-24 - Completed plan 01-01 and normalized `.justfile` around macOS preset-backed recipes
 
-Progress: [█░░░░░░░░░] 7%
+Progress: [█░░░░░░░░░] 13%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
+- Total plans completed: 2
 - Average duration: 1 min
 - Total execution time: 0.0 hours
 
@@ -27,11 +27,12 @@ Progress: [█░░░░░░░░░] 7%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 | 1 | 1 min | 1 min |
+| 1 | 2 | 2 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (1 min)
+- Last 5 plans: 01-01 (1 min), 01-02 (1 min)
 - Trend: Stable
+- Latest execution: 01-01 (1 min, 2 tasks, 1 file)
 
 ## Accumulated Context
 
@@ -45,6 +46,8 @@ Recent decisions affecting current work:
 - Initialization: Start macOS GPU enablement with a Vulkan portability path before any native Metal rewrite.
 - Phase 1 plan 01-02: Represent the supported macOS Apple Silicon matrix with four explicit shared CMake presets spanning system and vendored dependency modes.
 - Phase 1 plan 01-02: Keep `CMakeLists.txt` authoritative and unchanged unless preset-driven configure exposes a real CMake-side incompatibility.
+- Phase 1 plan 01-01: Expose each supported macOS system and vendored Release/Debug preset as explicit `just` configure/build recipe pairs.
+- Phase 1 plan 01-01: Move distro packaging helpers into a secondary `packaging` group so `just --list` stays macOS-first.
 
 ### Pending Todos
 
@@ -58,6 +61,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-24 03:55
-Stopped at: Completed 01-build-surface-foundation/01-02-PLAN.md
+Last session: 2026-03-24 04:01
+Stopped at: Completed 01-build-surface-foundation/01-01-PLAN.md
 Resume file: .planning/phases/01-build-surface-foundation/01-03-PLAN.md

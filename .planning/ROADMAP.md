@@ -31,7 +31,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: Audit and normalize the current `.justfile` and raw build entrypoints
+- [x] 01-01: Audit and normalize the current `.justfile` and raw build entrypoints
 - [x] 01-02: Introduce shared CMake presets for supported macOS build variants and dependency modes
 - [ ] 01-03: Align `just` command discovery and repo guidance with the preset-driven workflow
 
@@ -103,7 +103,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Build Surface Foundation | 1/3 | In Progress | 2026-03-24 |
+| 1. Build Surface Foundation | 2/3 | In Progress | 2026-03-24 |
 | 2. macOS Toolchain Bring-Up | 0/3 | Not started | - |
 | 3. Runtime Smoke and GPU Proof | 0/3 | Not started | - |
 | 4. Documentation and Strategy Publication | 0/3 | Not started | - |
