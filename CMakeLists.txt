@@ -10,6 +10,10 @@ if(POLICY CMP0167)
     cmake_policy(SET CMP0167 NEW)
 endif()
 
+if(POLICY CMP0074)
+    cmake_policy(SET CMP0074 NEW)
+endif()
+
 # Set the default build type to Release if not specified
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -164,6 +168,21 @@ endif()
 
 # ncnn
 if(VIDEO2X_USE_EXTERNAL_NCNN)
+    if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" AND NOT DEFINED OpenMP_ROOT)
+        find_program(BREW_EXECUTABLE brew)
+        if(BREW_EXECUTABLE)
+            execute_process(
+                COMMAND "${BREW_EXECUTABLE}" --prefix libomp
+                OUTPUT_VARIABLE maybe_libomp_prefix
+                OUTPUT_STRIP_TRAILING_WHITESPACE
+                ERROR_QUIET
+            )
+            if(maybe_libomp_prefix)
+                # Homebrew libomp is not discovered automatically by AppleClang.
+                set(OpenMP_ROOT "${maybe_libomp_prefix}")
+            endif()
+        endif()
+    endif()
     find_package(ncnn REQUIRED)
 else()
     if(WIN32)
@@ -178,6 +197,25 @@ else()
     else()
         option(NCNN_INSTALL_SDK "" ON)
         option(SKIP_GLSLANG_INSTALL "" OFF)
+        option(NCNN_SYSTEM_GLSLANG "" ON)
+
+        if(APPLE AND NOT DEFINED glslang_DIR)
+            if(NOT BREW_EXECUTABLE)
+                find_program(BREW_EXECUTABLE brew)
+            endif()
+            if(BREW_EXECUTABLE)
+                execute_process(
+                    COMMAND "${BREW_EXECUTABLE}" --prefix glslang
+                    OUTPUT_VARIABLE maybe_glslang_prefix
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                    ERROR_QUIET
+                )
+                if(EXISTS "${maybe_glslang_prefix}/lib/cmake/glslang/glslang-config.cmake")
+                    set(glslang_DIR "${maybe_glslang_prefix}/lib/cmake/glslang")
+                    set(GLSLANG_TARGET_DIR "${maybe_glslang_prefix}/lib/cmake/glslang")
+                endif()
+            endif()
+        endif()
 
         option(NCNN_PIXEL_ROTATE "" OFF)
         option(NCNN_PIXEL_AFFINE "" OFF)
