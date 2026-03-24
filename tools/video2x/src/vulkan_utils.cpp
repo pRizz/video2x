@@ -1,14 +1,87 @@
 #include "vulkan_utils.h"
 
+#include <cstring>
 #include <iostream>
 #include <vector>
 
 #include <libvideo2x/logger_manager.h>
 
-static int enumerate_vulkan_devices(VkInstance* instance, std::vector<VkPhysicalDevice>& devices) {
-    // Create a Vulkan instance
+#ifndef VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME
+#define VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME "VK_KHR_portability_enumeration"
+#endif
+
+#ifndef VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR
+#define VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR 0x00000001
+#endif
+
+namespace {
+
+int enumerate_instance_extensions(std::vector<VkExtensionProperties>& extensions) {
+    uint32_t extension_count = 0;
+    VkResult result = vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, nullptr);
+    if (result != VK_SUCCESS) {
+        video2x::logger()->error("Failed to enumerate Vulkan instance extensions.");
+        return -1;
+    }
+
+    extensions.resize(extension_count);
+    if (extension_count == 0) {
+        return 0;
+    }
+
+    result = vkEnumerateInstanceExtensionProperties(nullptr, &extension_count, extensions.data());
+    if (result != VK_SUCCESS) {
+        video2x::logger()->error("Failed to retrieve Vulkan instance extensions.");
+        return -1;
+    }
+
+    extensions.resize(extension_count);
+    return 0;
+}
+
+bool has_instance_extension(
+    const std::vector<VkExtensionProperties>& extensions, const char* extension_name
+) {
+    for (const auto& extension : extensions) {
+        if (std::strcmp(extension.extensionName, extension_name) == 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int create_vulkan_instance(VkInstance* instance) {
+    std::vector<VkExtensionProperties> available_extensions;
+    if (enumerate_instance_extensions(available_extensions) != 0) {
+        return -1;
+    }
+
+    std::vector<const char*> enabled_extensions;
+    VkInstanceCreateFlags create_flags = 0;
+
+#ifdef __APPLE__
+    if (!has_instance_extension(
+            available_extensions, VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME
+        )) {
+        video2x::logger()->error(
+            "macOS Vulkan device enumeration requires {} from a portability stack such as "
+            "MoltenVK.",
+            VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME
+        );
+        return -1;
+    }
+
+    enabled_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+    create_flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
+#endif
+
     VkInstanceCreateInfo create_info{};
     create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    create_info.flags = create_flags;
+    create_info.enabledExtensionCount = static_cast<uint32_t>(enabled_extensions.size());
+    create_info.ppEnabledExtensionNames =
+        enabled_extensions.empty() ? nullptr : enabled_extensions.data();
 
     VkResult result = vkCreateInstance(&create_info, nullptr, instance);
     if (result != VK_SUCCESS) {
@@ -16,9 +89,19 @@ static int enumerate_vulkan_devices(VkInstance* instance, std::vector<VkPhysical
         return -1;
     }
 
+    return 0;
+}
+
+}  // namespace
+
+static int enumerate_vulkan_devices(VkInstance* instance, std::vector<VkPhysicalDevice>& devices) {
+    if (create_vulkan_instance(instance) != 0) {
+        return -1;
+    }
+
     // Enumerate physical devices
     uint32_t device_count = 0;
-    result = vkEnumeratePhysicalDevices(*instance, &device_count, nullptr);
+    VkResult result = vkEnumeratePhysicalDevices(*instance, &device_count, nullptr);
     if (result != VK_SUCCESS || device_count == 0) {
         video2x::logger()->error(
             "Failed to enumerate Vulkan physical devices or no devices available."
