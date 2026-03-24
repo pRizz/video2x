@@ -11,8 +11,8 @@ See: .planning/PROJECT.md (updated 2026-03-24)
 
 Phase: 2 of 5 (macOS Toolchain Bring-Up)
 Plan: Not started
-Status: Phase 1 complete; next plan not created yet
-Last activity: 2026-03-24 - Completed plan 01-03 and closed Phase 1 by aligning repo and book entrypoints with the preset-backed macOS workflow
+Status: Phase 1 verified complete; Phase 2 planning is next
+Last activity: 2026-03-24 - Verified Phase 1 after executing all three plans and confirming the build-surface must-haves against the real repo state
 
 Progress: [██░░░░░░░░] 20%
 
@@ -60,10 +60,10 @@ None yet.
 - Exact repo changes needed for portability-aware Vulkan device handling on macOS are still unverified.
 - Real-world MoltenVK behavior for the shipped Video2X processor paths on Apple Silicon still needs runtime proof.
 - Local macOS prerequisite setup still needs to make `pkg-config` availability explicit for preset-driven configure checks.
-- Phase 2 has not been planned yet, so the next execution step is to create `02-01-PLAN.md`.
+- Phase 2 has not been planned yet, so the next workflow step is to create the Phase 2 plan set.
 
 ## Session Continuity
 
-Last session: 2026-03-24 04:06
-Stopped at: Completed 01-build-surface-foundation/01-03-PLAN.md and Phase 1
-Resume file: .planning/ROADMAP.md
+Last session: 2026-03-24 04:10
+Stopped at: Verified Phase 1 and prepared handoff to Phase 2 planning
+Resume file: .planning/phases/01-build-surface-foundation/01-VERIFICATION.md
