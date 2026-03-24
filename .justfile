@@ -13,6 +13,11 @@ test_output := "data/output.mp4"
 # Apple Silicon macOS contributor workflow via shared CMake presets.
 [unix]
 [group('build')]
+doctor-macos:
+    ./scripts/macos_doctor.sh
+
+[unix]
+[group('build')]
 configure-macos-system-release:
     cmake --preset macos-system-release
 
