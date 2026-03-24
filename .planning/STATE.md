@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-24)
 
 **Core value:** Make macOS a first-class, convenient, GPU-capable target for Video2X instead of an afterthought.
-**Current focus:** Phase 3 - Runtime Smoke and GPU Proof
+**Current focus:** Phase 4 - Documentation and Strategy Publication
 
 ## Current Position
 
-Phase: 3 of 5 (Runtime Smoke and GPU Proof)
+Phase: 4 of 5 (Documentation and Strategy Publication)
 Plan: Not started
-Status: Phase 2 verified complete; Phase 3 planning is next
-Last activity: 2026-03-24 - Verified Phase 2 after executing all three plans and confirming the doctor-first macOS build flow against the real repo state
+Status: Phase 3 verified complete; Phase 4 planning is next
+Last activity: 2026-03-24 - Verified Phase 3 after executing all three plans and proving the macOS smoke, device-list, and sample-workload flow against the real repo state
 
-Progress: [████░░░░░░] 40%
+Progress: [██████░░░░] 60%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 5 min
-- Total execution time: 0.5 hours
+- Total plans completed: 9
+- Average duration: 6 min
+- Total execution time: 1.0 hours
 
 **By Phase:**
 
@@ -29,11 +29,12 @@ Progress: [████░░░░░░] 40%
 |-------|-------|-------|----------|
 | 1 | 3 | 3 min | 1 min |
 | 2 | 3 | 30 min | 10 min |
+| 3 | 3 | 27 min | 9 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-02 (1 min), 01-03 (2 min), 02-01 (7 min), 02-02 (19 min), 02-03 (4 min)
-- Trend: Rising complexity
-- Latest execution: 02-03 (4 min, 3 tasks, 5 files)
+- Last 5 plans: 02-02 (19 min), 02-03 (4 min), 03-01 (8 min), 03-02 (8 min), 03-03 (10 min)
+- Trend: Stable at higher complexity
+- Latest execution: 03-03 (10 min, 4 tasks, 5 files)
 
 ## Accumulated Context
 
@@ -55,6 +56,9 @@ Recent decisions affecting current work:
 - Phase 2 plan 02-02: Keep CMake authoritative for Apple Silicon build fixes, including Homebrew/OpenMP/FFmpeg/macOS linker compatibility, instead of moving logic into wrappers.
 - Phase 2 plan 02-03: Treat the system Release and Debug path as the validated Phase 2 build contract and document vendored mode as a checkout-dependent fallback boundary.
 - Phase 2 plan 02-03: Treat missing `vulkaninfo` as a warning rather than a hard Phase 2 configure/build gate when MoltenVK or equivalent tooling already satisfies the validated system path.
+- Phase 3 plan 03-01: Make built-binary macOS runtime proof independent of the caller's working directory through executable-relative resource lookup, with installed-artifact hardening as secondary.
+- Phase 3 plan 03-02: Make Vulkan portability enumeration explicit on macOS and emit actionable MoltenVK-oriented failure guidance instead of generic instance-creation errors.
+- Phase 3 plan 03-03: Publish `just`-level macOS smoke, device-list, and Real-ESRGAN sample validation commands backed by a repo-owned script and locally generated sample media.
 
 ### Pending Todos
 
@@ -62,15 +66,13 @@ None yet.
 
 ### Blockers/Concerns
 
-- Exact repo changes needed for portability-aware Vulkan device handling on macOS are still unverified.
-- Real-world MoltenVK behavior for the shipped Video2X processor paths on Apple Silicon still needs runtime proof.
-- Real-world MoltenVK behavior for actual Video2X runtime and GPU enumeration still needs proof in Phase 3.
-- The validated install step still prints non-blocking `install_name_tool` rpath-deletion errors during macOS builds and should be monitored in later runtime validation.
+- The validation host currently loads MoltenVK from both `/opt/homebrew` and `/usr/local`, which emits duplicate `MVKBlockObserver` warnings even though runtime validation passed.
+- The validated install step still prints non-blocking `install_name_tool` rpath-deletion errors on third-party dylibs during macOS builds and should be monitored in later documentation or cleanup work.
 - Vendored macOS configure still depends on fuller local `third_party/boost` checkout materialization; this did not block the Phase 2 system-path requirements but remains a local fallback caveat.
-- Phase 3 has not been planned yet, so the next workflow step is to create the Phase 3 plan set.
+- Phase 4 has not been planned yet, so the next workflow step is to create the Phase 4 plan set.
 
 ## Session Continuity
 
-Last session: 2026-03-24 11:39
-Stopped at: Verified Phase 2 and prepared handoff to Phase 3 planning
-Resume file: .planning/phases/02-macos-toolchain-bring-up/02-VERIFICATION.md
+Last session: 2026-03-24 18:03
+Stopped at: Verified Phase 3 and prepared handoff to Phase 4 planning
+Resume file: .planning/phases/03-runtime-smoke-and-gpu-proof/03-VERIFICATION.md

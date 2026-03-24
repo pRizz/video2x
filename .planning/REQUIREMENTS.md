@@ -18,14 +18,14 @@
 
 ### Validation
 
-- [ ] **VAL-01**: Contributor can run a macOS smoke command that proves the built `video2x` binary launches successfully
-- [ ] **VAL-02**: Contributor can verify GPU and device enumeration on macOS from the built binary
-- [ ] **VAL-03**: Contributor can run at least one short sample workload on macOS and confirm output is produced successfully
+- [x] **VAL-01**: Contributor can run a macOS smoke command that proves the built `video2x` binary launches successfully
+- [x] **VAL-02**: Contributor can verify GPU and device enumeration on macOS from the built binary
+- [x] **VAL-03**: Contributor can run at least one short sample workload on macOS and confirm output is produced successfully
 
 ### GPU Strategy
 
 - [ ] **GPU-01**: Project docs define the initial macOS GPU strategy around Vulkan SDK and MoltenVK and explain why it is the first path
-- [ ] **GPU-02**: Project docs and validation flow call out the Vulkan portability requirements that must be satisfied on macOS
+- [x] **GPU-02**: Project docs and validation flow call out the Vulkan portability requirements that must be satisfied on macOS
 - [ ] **GPU-03**: Project records the conditions that would justify deeper native Metal exploration after the initial bring-up
 
 ### Documentation
@@ -61,11 +61,11 @@
 | BLD-01 | Phase 2 | Complete |
 | BLD-02 | Phase 2 | Complete |
 | BLD-03 | Phase 1 | Complete |
-| VAL-01 | Phase 3 | Pending |
-| VAL-02 | Phase 3 | Pending |
-| VAL-03 | Phase 3 | Pending |
+| VAL-01 | Phase 3 | Complete |
+| VAL-02 | Phase 3 | Complete |
+| VAL-03 | Phase 3 | Complete |
 | GPU-01 | Phase 4 | Pending |
-| GPU-02 | Phase 3 | Pending |
+| GPU-02 | Phase 3 | Complete |
 | GPU-03 | Phase 5 | Pending |
 | DOC-01 | Phase 4 | Pending |
 | DOC-02 | Phase 4 | Pending |
@@ -77,4 +77,4 @@
 
 ---
 *Requirements defined: 2026-03-24*
-*Last updated: 2026-03-24 after Phase 2 verification*
+*Last updated: 2026-03-24 after Phase 3 verification*
