@@ -3,10 +3,15 @@
 #if _WIN32
 #include <Windows.h>
 #include <cwchar>
+#elif __APPLE__
+#include <mach-o/dyld.h>
 #else
 #include <unistd.h>
 #include <cstring>
 #endif
+
+#include <cstdlib>
+#include <vector>
 
 #include <spdlog/spdlog.h>
 
@@ -40,6 +45,24 @@ static std::filesystem::path get_executable_directory() {
     std::filesystem::path execpath(filepath.data());
     return execpath.parent_path();
 }
+#elif __APPLE__
+static std::filesystem::path get_executable_directory() {
+    std::vector<char> filepath(1024);
+    uint32_t size = static_cast<uint32_t>(filepath.size());
+
+    while (_NSGetExecutablePath(filepath.data(), &size) != 0) {
+        filepath.resize(size);
+    }
+
+    std::filesystem::path execpath(filepath.data());
+    std::error_code ec;
+    execpath = std::filesystem::weakly_canonical(execpath, ec);
+    if (ec) {
+        execpath = execpath.lexically_normal();
+    }
+
+    return execpath.parent_path();
+}
 #else   // _WIN32
 static std::filesystem::path get_executable_directory() {
     std::error_code ec;
@@ -71,11 +94,12 @@ bool file_is_readable(const std::filesystem::path& path) {
 std::optional<std::filesystem::path> find_resource(const std::filesystem::path& resource) {
     // Build a list of candidate directories
     std::vector<std::filesystem::path> candidates;
+    const std::filesystem::path executable_directory = get_executable_directory();
 
     // 1. The resource's path as provided
     candidates.push_back(resource);
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(__APPLE__)
     // 2. AppImage's mounted directory
     if (const char* appdir = std::getenv("APPDIR")) {
         candidates.push_back(
@@ -90,8 +114,25 @@ std::optional<std::filesystem::path> find_resource(const std::filesystem::path& 
     candidates.push_back(std::filesystem::path("/usr/share/video2x") / resource);
 #endif
 
-    // 5. The executable's parent directory
-    candidates.push_back(get_executable_directory() / resource);
+    if (!executable_directory.empty()) {
+        // Resolve resources from the executable's directory first so runtime probes do not
+        // depend on the caller's working directory.
+        candidates.push_back(executable_directory / resource);
+
+#ifdef __APPLE__
+        // Support both the built tree (`build/<preset>/video2x`) and the installed prefix
+        // (`<prefix>/bin/video2x`) from the executable location.
+        const std::filesystem::path executable_parent = executable_directory.parent_path();
+        if (!executable_parent.empty()) {
+            candidates.push_back(executable_parent / "share" / "video2x" / resource);
+        }
+
+        const std::filesystem::path executable_grandparent = executable_parent.parent_path();
+        if (!executable_grandparent.empty()) {
+            candidates.push_back(executable_grandparent / resource);
+        }
+#endif
+    }
 
     // Iterate over the candidate directories and return the first readable file
     for (const auto& candidate : candidates) {
