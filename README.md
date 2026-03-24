@@ -84,14 +84,31 @@ Video2X packages are available for the Linux distros listed below. A universal A
 
 This fork currently supports source builds on the latest macOS running on Apple Silicon. The canonical contributor workflow is the thin `just` entrypoint backed by shared CMake presets, so contributors do not need to reconstruct raw `cmake -D...` invocations by hand.
 
-Start from the repo root with one configure command and one build command:
+Before building, make sure the prerequisite surface is in place:
+
+- Xcode or the Apple Command Line Tools selected through `xcode-select`
+- Homebrew under `/opt/homebrew`
+- `cmake`, `ninja`, `ffmpeg`, and `pkg-config` (Homebrew's `pkgconf` formula provides it)
+- Vulkan portability tooling: either a Vulkan SDK or the Homebrew MoltenVK stack, plus `glslangValidator`
+- Extra system-mode packages for the validated `macos-system-*` path: Homebrew `ncnn`, `spdlog`, and `boost`
+
+From the repo root, preflight those requirements and then run one configure/build pair:
 
 ```bash
+just doctor-macos
 just configure-macos-system-release
 just build-macos-system-release
 ```
 
-If you need the vendored dependency fallback, use `configure-macos-vendored-release` and `build-macos-vendored-release` instead. Debug variants are also available via the matching `*-debug` commands. These `just` recipes forward directly to the shared presets in `CMakePresets.json`.
+The matching Debug path is:
+
+```bash
+just doctor-macos
+just configure-macos-system-debug
+just build-macos-system-debug
+```
+
+Use the vendored `configure-macos-vendored-*` and `build-macos-vendored-*` recipes only when those system-only Homebrew packages are unavailable. Vendored mode still expects a populated `third_party/` checkout; if configure stops inside `third_party/boost`, refresh the local checkout state before assuming the preset names are wrong. All of these `just` recipes remain thin wrappers around the shared presets in `CMakePresets.json`.
 
 For the contributor-facing workflow surface, see [CONTRIBUTING.md](CONTRIBUTING.md). The docs book's build index also calls out this current macOS boundary while a fuller first-class macOS guide is deferred to a later phase.
 

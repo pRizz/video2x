@@ -6,21 +6,38 @@ Thank you for considering contributing to Video2X. This document outlines the gu
 
 For source builds, this fork currently supports the latest macOS on Apple Silicon. The contributor-facing front door is `just`; the recipes forward to the shared configure and build presets in `CMakePresets.json`.
 
-Use one configure command and one build command from the repo root:
+Start by making sure the prerequisite surface is present:
+
+- Xcode or the Apple Command Line Tools selected with `xcode-select`
+- Homebrew installed under `/opt/homebrew`
+- `cmake`, `ninja`, `ffmpeg`, and `pkg-config` available on `PATH`
+- Vulkan portability tooling available through either the Vulkan SDK or Homebrew MoltenVK tooling, plus `glslangValidator`
+- Homebrew `ncnn`, `spdlog`, and `boost` when using the validated `macos-system-*` presets
+
+Run the preflight check first, then use one configure command and one build command from the repo root:
 
 ```bash
+just doctor-macos
 just configure-macos-system-release
 just build-macos-system-release
 ```
 
-Use the matching `*-debug` commands for Debug builds. If you need the vendored dependency fallback instead of system packages, swap `system` for `vendored` in the command names:
+Use the matching `*-debug` commands for Debug builds:
+
+```bash
+just doctor-macos
+just configure-macos-system-debug
+just build-macos-system-debug
+```
+
+If you need the vendored dependency fallback because those system-only Homebrew packages are unavailable, swap `system` for `vendored` in the command names:
 
 ```bash
 just configure-macos-vendored-release
 just build-macos-vendored-release
 ```
 
-If you need to inspect or reproduce the underlying CMake invocation, use the same preset names directly with `cmake --preset <name>` and `cmake --build --preset <name>`. Later phases will expand prerequisite and platform-specific troubleshooting; this document keeps the current build surface intentionally thin and aligned with the implemented preset-backed workflow.
+Vendored mode still depends on a populated repo checkout under `third_party/`. If vendored configure fails in `third_party/boost` while looking for targets such as `Boost::intrusive` or `Boost::smart_ptr`, refresh the local vendored checkout before assuming the preset-backed flow is broken. This document stays scoped to prerequisite setup and build execution; later phases can expand troubleshooting and platform-specific validation.
 
 ## Commit Messages
 
