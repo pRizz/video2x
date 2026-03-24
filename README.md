@@ -110,6 +110,22 @@ just build-macos-system-debug
 
 Use the vendored `configure-macos-vendored-*` and `build-macos-vendored-*` recipes only when those system-only Homebrew packages are unavailable. Vendored mode still expects a populated `third_party/` checkout; if configure stops inside `third_party/boost`, refresh the local checkout state before assuming the preset names are wrong. All of these `just` recipes remain thin wrappers around the shared presets in `CMakePresets.json`.
 
+After the canonical Release build, validate the macOS runtime surface from the repo root with:
+
+```bash
+just smoke-macos
+just list-devices-macos
+just sample-macos-realesrgan
+```
+
+These Phase 3 commands target the built `build/macos-system-release/video2x` binary by default. If you need to probe the install tree as a secondary check, run the script directly with `--binary-mode installed`, for example:
+
+```bash
+./scripts/macos_runtime_validation.sh smoke --binary-mode installed
+```
+
+`just list-devices-macos` is expected to pass only when the built binary exists locally and the macOS Vulkan portability stack is working end to end: MoltenVK or equivalent tooling is installed, the loader advertises `VK_KHR_portability_enumeration`, and the command prints at least one detected GPU name before exiting `0`. `just sample-macos-realesrgan` is the canonical sample workload because it uses the validated ncnn-backed Real-ESRGAN path, generates a short local clip with `ffmpeg` when you do not supply one, and confirms the output video with `ffprobe`. The repo does not assume `data/standard-test.mp4` exists for this proof flow, and `libplacebo` remains optional rather than the canonical macOS validation target until it is revalidated locally.
+
 For the contributor-facing workflow surface, see [CONTRIBUTING.md](CONTRIBUTING.md). The docs book's build index also calls out this current macOS boundary while a fuller first-class macOS guide is deferred to a later phase.
 
 ## [📦 Container Image](https://docs.video2x.org/running/container.html)
@@ -146,6 +162,8 @@ _Upscale demo: Spirited Away's movie trailer_
 ### Standard Test Clip
 
 The following clip can be used to test if your setup works properly. This is also the standard clip used for running performance benchmarks.
+
+For the macOS Phase 3 validation flow above, downloading this clip is optional. The canonical `sample-macos-realesrgan` command generates a short local input with `ffmpeg` unless you pass an explicit input file to `scripts/macos_runtime_validation.sh`.
 
 - [Standard Test Clip (240P)](https://files.k4yt3x.com/resources/videos/standard-test.mp4) 4.54 MiB
 - [Real-CUGAN Upscaled Sample (1704P)](https://files.k4yt3x.com/resources/videos/standard-realcugan.mp4) 3.5 MiB

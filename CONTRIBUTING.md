@@ -39,6 +39,36 @@ just build-macos-vendored-release
 
 Vendored mode still depends on a populated repo checkout under `third_party/`. If vendored configure fails in `third_party/boost` while looking for targets such as `Boost::intrusive` or `Boost::smart_ptr`, refresh the local vendored checkout before assuming the preset-backed flow is broken. This document stays scoped to prerequisite setup and build execution; later phases can expand troubleshooting and platform-specific validation.
 
+## Canonical macOS Runtime Validation
+
+After `just configure-macos-system-release` and `just build-macos-system-release`, validate the runtime contract from the repo root with the built binary first:
+
+```bash
+just smoke-macos
+just list-devices-macos
+just sample-macos-realesrgan
+```
+
+Those `just` recipes stay thin and delegate to `scripts/macos_runtime_validation.sh`; they do not reuse the Linux-oriented `test-*` recipes or any `LD_LIBRARY_PATH` setup as if that were valid macOS proof.
+
+- `just smoke-macos` passes when the built `build/macos-system-release/video2x` CLI returns success for `--help`.
+- `just list-devices-macos` passes when the built CLI exits `0` and prints at least one detected GPU name. The exact preconditions are a working MoltenVK or equivalent Vulkan portability stack, `VK_KHR_portability_enumeration` advertised by the loader, and a real GPU visible through that portability layer.
+- `just sample-macos-realesrgan` is the canonical sample workload for Phase 3. It uses the validated `realesrgan` path, generates a short local clip with `ffmpeg -y -f lavfi -i testsrc=size=320x180:rate=12 -t 1 ...` when you do not provide one, and verifies the resulting output file with `ffprobe`.
+
+If you already have a local clip to process, call the script directly and pass it explicitly:
+
+```bash
+./scripts/macos_runtime_validation.sh sample-realesrgan --input /absolute/path/to/input.mp4
+```
+
+The built binary remains the canonical proof target. The install tree is supported only as a secondary check through the same script:
+
+```bash
+./scripts/macos_runtime_validation.sh smoke --binary-mode installed
+```
+
+Do not treat `libplacebo` as the canonical macOS runtime proof path until it is revalidated locally. If `realcugan` is needed for host-specific debugging, validate it separately instead of replacing `sample-macos-realesrgan` in the default workflow.
+
 ## Commit Messages
 
 Commit messages must follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. This helps maintain a consistent and informative project history.
