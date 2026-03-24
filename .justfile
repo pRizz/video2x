@@ -12,14 +12,8 @@ test_output := "data/output.mp4"
 
 [unix]
 [group('build')]
-build:
-    cmake -G '{{generator}}' -S . -B {{bindir}} \
-        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-        -DCMAKE_CXX_COMPILER={{cxx}} \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX={{bindir}}/video2x-install \
-        -DVIDEO2X_ENABLE_NATIVE=ON
-    cmake --build {{bindir}} --config Release --parallel --target install
+configure-macos-system-release:
+    cmake --preset macos-system-release
 
 [windows]
 [group('build')]
@@ -39,26 +33,38 @@ build:
 
 [unix]
 [group('build')]
-static:
-    cmake -G '{{generator}}' -S . -B {{bindir}} \
-        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-        -DCMAKE_CXX_COMPILER={{cxx}} \
-        -DBUILD_SHARED_LIBS=OFF \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_INSTALL_PREFIX={{bindir}}/video2x-install \
-        -DVIDEO2X_USE_EXTERNAL_NCNN=OFF \
-        -DVIDEO2X_USE_EXTERNAL_SPDLOG=OFF \
-        -DVIDEO2X_USE_EXTERNAL_BOOST=OFF
-    cmake --build {{bindir}} --config Release --parallel --target install
+build-macos-system-release:
+    cmake --build --preset macos-system-release
 
 [unix]
 [group('build')]
-debug:
-    cmake -G '{{generator}}' -S . -B {{bindir}} \
-        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-        -DCMAKE_CXX_COMPILER={{cxx}} \
-        -DCMAKE_BUILD_TYPE=Debug
-    cmake --build {{bindir}} --config Debug --parallel
+configure-macos-system-debug:
+    cmake --preset macos-system-debug
+
+[unix]
+[group('build')]
+build-macos-system-debug:
+    cmake --build --preset macos-system-debug
+
+[unix]
+[group('build')]
+configure-macos-vendored-release:
+    cmake --preset macos-vendored-release
+
+[unix]
+[group('build')]
+build-macos-vendored-release:
+    cmake --build --preset macos-vendored-release
+
+[unix]
+[group('build')]
+configure-macos-vendored-debug:
+    cmake --preset macos-vendored-debug
+
+[unix]
+[group('build')]
+build-macos-vendored-debug:
+    cmake --build --preset macos-vendored-debug
 
 [windows]
 [group('build')]
