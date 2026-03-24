@@ -2,6 +2,7 @@
 
 #include <cstring>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include <libvideo2x/logger_manager.h>
@@ -15,6 +16,52 @@
 #endif
 
 namespace {
+
+const char* vulkan_result_name(VkResult result) {
+    switch (result) {
+        case VK_SUCCESS:
+            return "VK_SUCCESS";
+        case VK_NOT_READY:
+            return "VK_NOT_READY";
+        case VK_TIMEOUT:
+            return "VK_TIMEOUT";
+        case VK_EVENT_SET:
+            return "VK_EVENT_SET";
+        case VK_EVENT_RESET:
+            return "VK_EVENT_RESET";
+        case VK_INCOMPLETE:
+            return "VK_INCOMPLETE";
+        case VK_ERROR_OUT_OF_HOST_MEMORY:
+            return "VK_ERROR_OUT_OF_HOST_MEMORY";
+        case VK_ERROR_OUT_OF_DEVICE_MEMORY:
+            return "VK_ERROR_OUT_OF_DEVICE_MEMORY";
+        case VK_ERROR_INITIALIZATION_FAILED:
+            return "VK_ERROR_INITIALIZATION_FAILED";
+        case VK_ERROR_DEVICE_LOST:
+            return "VK_ERROR_DEVICE_LOST";
+        case VK_ERROR_MEMORY_MAP_FAILED:
+            return "VK_ERROR_MEMORY_MAP_FAILED";
+        case VK_ERROR_LAYER_NOT_PRESENT:
+            return "VK_ERROR_LAYER_NOT_PRESENT";
+        case VK_ERROR_EXTENSION_NOT_PRESENT:
+            return "VK_ERROR_EXTENSION_NOT_PRESENT";
+        case VK_ERROR_FEATURE_NOT_PRESENT:
+            return "VK_ERROR_FEATURE_NOT_PRESENT";
+        case VK_ERROR_INCOMPATIBLE_DRIVER:
+            return "VK_ERROR_INCOMPATIBLE_DRIVER";
+        default:
+            return "VK_ERROR_UNKNOWN";
+    }
+}
+
+void log_macos_portability_requirement(const std::string& detail) {
+    video2x::logger()->error(
+        "macOS Vulkan device enumeration requires portability enumeration via {} from a "
+        "portability stack such as MoltenVK. {}",
+        VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME,
+        detail
+    );
+}
 
 int enumerate_instance_extensions(std::vector<VkExtensionProperties>& extensions) {
     uint32_t extension_count = 0;
@@ -64,10 +111,8 @@ int create_vulkan_instance(VkInstance* instance) {
     if (!has_instance_extension(
             available_extensions, VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME
         )) {
-        video2x::logger()->error(
-            "macOS Vulkan device enumeration requires {} from a portability stack such as "
-            "MoltenVK.",
-            VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME
+        log_macos_portability_requirement(
+            "The active Vulkan loader did not advertise the required instance extension."
         );
         return -1;
     }
@@ -85,7 +130,16 @@ int create_vulkan_instance(VkInstance* instance) {
 
     VkResult result = vkCreateInstance(&create_info, nullptr, instance);
     if (result != VK_SUCCESS) {
+#ifdef __APPLE__
+        log_macos_portability_requirement(
+            "vkCreateInstance returned " + std::string(vulkan_result_name(result)) + " (" +
+            std::to_string(result) +
+            "). Verify that MoltenVK or another portability-enabled Vulkan loader is "
+            "installed and discoverable."
+        );
+#else
         video2x::logger()->error("Failed to create Vulkan instance.");
+#endif
         return -1;
     }
 
@@ -103,9 +157,24 @@ static int enumerate_vulkan_devices(VkInstance* instance, std::vector<VkPhysical
     uint32_t device_count = 0;
     VkResult result = vkEnumeratePhysicalDevices(*instance, &device_count, nullptr);
     if (result != VK_SUCCESS || device_count == 0) {
+#ifdef __APPLE__
+        if (result != VK_SUCCESS) {
+            log_macos_portability_requirement(
+                "vkEnumeratePhysicalDevices returned " + std::string(vulkan_result_name(result)) +
+                " (" + std::to_string(result) +
+                ") after enabling portability enumeration."
+            );
+        } else {
+            log_macos_portability_requirement(
+                "Vulkan instance creation succeeded but no portability-backed devices were "
+                "visible."
+            );
+        }
+#else
         video2x::logger()->error(
             "Failed to enumerate Vulkan physical devices or no devices available."
         );
+#endif
         vkDestroyInstance(*instance, nullptr);
         return -1;
     }
@@ -113,7 +182,15 @@ static int enumerate_vulkan_devices(VkInstance* instance, std::vector<VkPhysical
     devices.resize(device_count);
     result = vkEnumeratePhysicalDevices(*instance, &device_count, devices.data());
     if (result != VK_SUCCESS) {
+#ifdef __APPLE__
+        log_macos_portability_requirement(
+            "Failed to retrieve portability-backed Vulkan physical devices after enabling "
+            "portability enumeration: " +
+            std::string(vulkan_result_name(result)) + " (" + std::to_string(result) + ")."
+        );
+#else
         video2x::logger()->error("Failed to retrieve Vulkan physical devices.");
+#endif
         vkDestroyInstance(*instance, nullptr);
         return -1;
     }
