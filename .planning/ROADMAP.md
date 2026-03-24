@@ -62,9 +62,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Audit the repo's Vulkan and device-listing path for macOS portability requirements
-- [ ] 03-02: Add smoke and device-list validation commands around the built CLI
-- [ ] 03-03: Run and document a short Apple Silicon sample workload through a supported processor path
+- [ ] 03-01: Clean up macOS runtime path handling around the built CLI and, if cheap, harden the installed artifact secondarily
+- [ ] 03-02: Make the Vulkan and device-listing path portability-aware and explicit on macOS
+- [ ] 03-03: Expose the built-binary smoke, device-list, and short sample-workload validation flow through commands and docs
 
 ### Phase 4: Documentation and Strategy Publication
 **Goal**: Publish a first-class macOS build guide and document the initial GPU strategy and platform boundaries.
