@@ -227,10 +227,9 @@ fi
 
 if vulkaninfo_path=$(describe_tool vulkaninfo); then
     pass "vulkaninfo found at ${vulkaninfo_path}"
-    vulkan_stack_ready=true
 else
-    fail_baseline "vulkaninfo is missing."
-    print_detail "Install the Vulkan SDK or ensure MoltenVK tooling is exposed on PATH."
+    warn "vulkaninfo is not on PATH."
+    print_detail "This runtime probe is optional for Phase 02 configure/build validation when MoltenVK or a Vulkan SDK is already available."
 fi
 
 if glslang_path=$(describe_tool glslangValidator); then
@@ -252,12 +251,24 @@ if have_command brew; then
     fi
 fi
 
+if [[ -n "$pkg_config_executable" ]]; then
+    if "$pkg_config_executable" --exists vulkan; then
+        pass "pkg-config resolves vulkan"
+        vulkan_stack_ready=true
+    else
+        warn "pkg-config cannot resolve vulkan."
+        print_detail "System configure may still succeed if CMake finds MoltenVK or a Vulkan SDK by path."
+    fi
+fi
+
 if [[ "$vulkan_stack_ready" != true ]]; then
-    fail_baseline "Neither a usable Vulkan SDK path nor MoltenVK tooling was detected."
+    fail_baseline "Neither a usable Vulkan SDK path nor a MoltenVK/Homebrew Vulkan loader surface was detected."
+    print_detail "Install the Vulkan SDK or Homebrew's MoltenVK stack before relying on Vulkan-backed processors."
 fi
 
 print_section "System-Mode Extra Dependencies"
 print_detail "These checks only gate the macos-system-* presets. Vendored mode remains acceptable when this section is incomplete."
+print_detail "Vendored mode still expects a populated repo checkout under third_party/, including the Boost support libraries it configures locally."
 
 if have_command brew; then
     if ncnn_version=$(formula_version ncnn); then
@@ -288,7 +299,7 @@ fi
 print_section "Summary"
 
 if (( baseline_failures == 0 )); then
-    print_status "PASS" "Baseline macOS prerequisites are ready for the vendored presets."
+    print_status "PASS" "Baseline macOS prerequisites are ready for the preset-backed workflow."
 else
     print_status "FAIL" "Baseline macOS prerequisites are not ready for preset-backed builds yet."
 fi
@@ -297,7 +308,7 @@ if (( system_failures == 0 )); then
     print_status "PASS" "System-mode extras are ready for macos-system-*."
 else
     print_status "FAIL" "System-mode extras are not ready for macos-system-*."
-    print_detail "Vendored mode is still the fallback path once the baseline section passes."
+    print_detail "Vendored mode is still the fallback path once the baseline section passes and the local third_party checkout is complete."
 fi
 
 printf '\nResult: %d baseline issue(s), %d system-mode issue(s), %d warning(s).\n' \

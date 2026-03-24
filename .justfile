@@ -10,12 +10,13 @@ cxx := "clang++"
 test_video := "data/standard-test.mp4"
 test_output := "data/output.mp4"
 
-# Apple Silicon macOS contributor workflow via shared CMake presets.
+# Preflight the Apple Silicon macOS prerequisite surface before building.
 [unix]
 [group('build')]
 doctor-macos:
     ./scripts/macos_doctor.sh
 
+# Canonical supported Release path after `just doctor-macos`.
 [unix]
 [group('build')]
 configure-macos-system-release:
@@ -42,6 +43,7 @@ build:
 build-macos-system-release:
     cmake --build --preset macos-system-release
 
+# Canonical supported Debug path after `just doctor-macos`.
 [unix]
 [group('build')]
 configure-macos-system-debug:
@@ -52,6 +54,7 @@ configure-macos-system-debug:
 build-macos-system-debug:
     cmake --build --preset macos-system-debug
 
+# Fallback when Homebrew system-mode packages are unavailable; requires a populated `third_party/` checkout.
 [unix]
 [group('build')]
 configure-macos-vendored-release:
@@ -62,6 +65,7 @@ configure-macos-vendored-release:
 build-macos-vendored-release:
     cmake --build --preset macos-vendored-release
 
+# Vendored Debug uses the same fallback and checkout requirements as vendored Release.
 [unix]
 [group('build')]
 configure-macos-vendored-debug:
