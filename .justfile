@@ -10,6 +10,7 @@ cxx := "clang++"
 test_video := "data/standard-test.mp4"
 test_output := "data/output.mp4"
 
+# Apple Silicon macOS contributor workflow via shared CMake presets.
 [unix]
 [group('build')]
 configure-macos-system-release:
@@ -78,8 +79,9 @@ debug:
         -DVIDEO2X_USE_EXTERNAL_BOOST=OFF
     cmake --build {{bindir}} --config Debug --parallel
 
+# Secondary distro/package helpers remain available below.
 [unix]
-[group('build')]
+[group('packaging')]
 debian:
     apt-get update
     apt-get install -y --no-install-recommends \
@@ -107,7 +109,7 @@ debian:
     cmake --build /tmp/build --config Release --target install --parallel
 
 [unix]
-[group('build')]
+[group('packaging')]
 ubuntu2404:
     apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
@@ -134,7 +136,7 @@ ubuntu2404:
     dpkg-deb --build video2x-linux-ubuntu-amd64
 
 [unix]
-[group('build')]
+[group('packaging')]
 ubuntu2204:
     apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
@@ -164,7 +166,7 @@ ubuntu2204:
     dpkg-deb --build video2x-linux-ubuntu-amd64
 
 [unix]
-[group('build')]
+[group('packaging')]
 appimage:
     apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
