@@ -6,6 +6,8 @@
 
 This site hosts the documentation for the Video2X project, a machine learning-based lossless video super-resolution and frame interpolation framework.
 
+For this fork's current macOS-first workflow, start with the [macOS build guide](building/macos.md) and the [macOS GPU strategy](developing/macos-gpu-strategy.md).
+
 The project's homepage is located on GitHub at: [https://github.com/k4yt3x/video2x](https://github.com/k4yt3x/video2x).
 
 If you have any questions, suggestions, or found any issues in the documentation, please [open an issue](https://github.com/k4yt3x/video2x/issues/new/choose) on GitHub.

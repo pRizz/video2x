@@ -5,6 +5,7 @@
 # Building
 
 - [Building](building/README.md)
+  - [macOS (Apple Silicon)](building/macos.md)
   - [Windows](building/windows.md)
   - [Windows (Qt6)](building/windows-qt6.md)
   - [Linux](building/linux.md)
@@ -26,6 +27,7 @@
 # Developing
 
 - [Developing](developing/README.md)
+  - [macOS GPU Strategy](developing/macos-gpu-strategy.md)
   - [Architecture](developing/architecture.md)
   - [libvideo2x](developing/libvideo2x.md)
 
