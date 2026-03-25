@@ -67,3 +67,34 @@ Native Metal becomes justified only when:
 - a narrow spike can answer a specific hotspot question without rewriting the whole stack
 
 Native Metal is not justified by the current low-resolution synthetic baseline.
+
+## Option Assessment
+
+| Option | Current Evidence | Missing Evidence | Likely Payoff | Disqualify / Defer If | Status |
+|--------|------------------|------------------|---------------|------------------------|--------|
+| Tune current MoltenVK path | Benchmarks completed successfully for both filtering and interpolation; no catastrophic portability failure appeared | Representative higher-cost workloads and end-to-end comparisons | Highest chance of improving the current path without changing architecture | Defer only if larger workloads reveal that tuning cannot move the real bottleneck | Recommended leading candidate |
+| VideoToolbox experiments | GPU strategy already treats VideoToolbox as a possible follow-up when media I/O dominates | Measured end-to-end runs proving encode or decode overhead is the real limiter | Medium if full transcode cost dominates user experience | Defer while only compute-oriented benchmark evidence exists | Not recommended as the first next step |
+| Native Metal spike | Current docs define Metal as evidence-gated, and baseline does not show a clear backend failure | Proof of missing capability, unacceptable performance, or maintenance cost in the MoltenVK path | Potentially high, but only if the portability path is genuinely insufficient | Defer while current evidence shows a usable MoltenVK-first path | Not recommended as the first next step |
+| macOS CI automation | Would convert the now-validated build, smoke, and benchmark flow into repeatable regression coverage | Decision on whether optimization evidence or workflow automation is the tighter bottleneck right now | High workflow leverage and regression prevention | Defer if the next milestone is supposed to answer a technical performance question first | Recommended soon, but after one optimization-focused pass |
+| Packaging and distribution | Still out of scope for v1 and not needed to answer the Phase 5 technical gate | Clear packaging goals and stable local workflow worth automating | Useful user-facing leverage, but not diagnostic leverage | Defer while workflow evidence and regression automation still need to mature | Not recommended as the first next step |
+
+## Current MoltenVK Path Assessment
+
+The current MoltenVK path is the only option with direct measured support from the current Apple Silicon evidence. The compute-oriented benchmark runs were healthy enough to argue against an immediate backend rewrite, but they do not yet tell us enough about real user-visible transcode cost on representative media. That supports a narrow optimization-first milestone rather than a backend-first milestone.
+
+## Recommended Decision Posture
+
+- **Recommended:** optimize and characterize the current MoltenVK-first path next
+- **Recommended later:** automate macOS CI once the benchmark and validation surface stabilizes around the optimization work
+- **Not recommended now:** VideoToolbox-first work, native Metal-first work, or packaging-first work
+
+## Confidence
+
+The confidence level is moderate rather than high:
+
+- compute evidence exists, but only on synthetic low-resolution clips
+- end-to-end encode/decode evidence is still missing
+- the current environment still carries duplicate MoltenVK log noise
+- the repo now has enough structure to benchmark repeatably, which is a stronger starting point than before Phase 5
+
+That is sufficient to reject backend overreach now, but not sufficient to declare the current path fully optimized.
