@@ -92,6 +92,17 @@ list-devices-macos:
 sample-macos-realesrgan:
     ./scripts/macos_runtime_validation.sh sample-realesrgan
 
+# Canonical macOS benchmark surface backed by a repo-owned script.
+[unix]
+[group('test')]
+benchmark-macos-realesrgan:
+    ./scripts/macos_benchmark.sh benchmark-realesrgan
+
+[unix]
+[group('test')]
+benchmark-macos-rife:
+    ./scripts/macos_benchmark.sh benchmark-rife
+
 [windows]
 [group('build')]
 debug:
