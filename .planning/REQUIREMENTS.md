@@ -24,14 +24,14 @@
 
 ### GPU Strategy
 
-- [ ] **GPU-01**: Project docs define the initial macOS GPU strategy around Vulkan SDK and MoltenVK and explain why it is the first path
+- [x] **GPU-01**: Project docs define the initial macOS GPU strategy around Vulkan SDK and MoltenVK and explain why it is the first path
 - [x] **GPU-02**: Project docs and validation flow call out the Vulkan portability requirements that must be satisfied on macOS
 - [ ] **GPU-03**: Project records the conditions that would justify deeper native Metal exploration after the initial bring-up
 
 ### Documentation
 
-- [ ] **DOC-01**: `docs/book` includes a first-class macOS build guide alongside the Linux and Windows guides
-- [ ] **DOC-02**: Contributor docs explain the canonical `just` commands, supported dependency setup, and expected macOS support boundaries for this fork
+- [x] **DOC-01**: `docs/book` includes a first-class macOS build guide alongside the Linux and Windows guides
+- [x] **DOC-02**: Contributor docs explain the canonical `just` commands, supported dependency setup, and expected macOS support boundaries for this fork
 
 ## v2 Requirements
 
@@ -64,11 +64,11 @@
 | VAL-01 | Phase 3 | Complete |
 | VAL-02 | Phase 3 | Complete |
 | VAL-03 | Phase 3 | Complete |
-| GPU-01 | Phase 4 | Pending |
+| GPU-01 | Phase 4 | Complete |
 | GPU-02 | Phase 3 | Complete |
 | GPU-03 | Phase 5 | Pending |
-| DOC-01 | Phase 4 | Pending |
-| DOC-02 | Phase 4 | Pending |
+| DOC-01 | Phase 4 | Complete |
+| DOC-02 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 13 total
@@ -77,4 +77,4 @@
 
 ---
 *Requirements defined: 2026-03-24*
-*Last updated: 2026-03-24 after Phase 3 verification*
+*Last updated: 2026-03-24 after Phase 4 verification*

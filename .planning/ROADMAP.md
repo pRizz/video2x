@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Build Surface Foundation** - Make `just` and CMake presets the canonical contributor workflow
 - [x] **Phase 2: macOS Toolchain Bring-Up** - Add explicit Apple Silicon dependency validation and build paths
 - [x] **Phase 3: Runtime Smoke and GPU Proof** - Prove the built macOS binary runs and reaches the intended GPU path
-- [ ] **Phase 4: Documentation and Strategy Publication** - Publish first-class macOS docs and the initial GPU strategy
+- [x] **Phase 4: Documentation and Strategy Publication** - Publish first-class macOS docs and the initial GPU strategy
 - [ ] **Phase 5: Optimization Gate** - Decide what deeper macOS performance or backend work is actually justified
 
 ## Phase Details
@@ -77,9 +77,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: Write the first-class macOS build guide in `docs/book`
-- [ ] 04-02: Publish the initial macOS GPU strategy, assumptions, and known limits in repo docs
-- [ ] 04-03: Align README and related entrypoint docs with the new macOS-first workflow
+- [x] 04-01: Write the first-class macOS build guide in `docs/book`
+- [x] 04-02: Publish the initial macOS GPU strategy, assumptions, and known limits in repo docs
+- [x] 04-03: Align README and related entrypoint docs with the new macOS-first workflow
 
 ### Phase 5: Optimization Gate
 **Goal**: Decide, from evidence, what performance and backend work should happen after the first milestone.
@@ -106,5 +106,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Build Surface Foundation | 3/3 | Complete | 2026-03-24 |
 | 2. macOS Toolchain Bring-Up | 3/3 | Complete | 2026-03-24 |
 | 3. Runtime Smoke and GPU Proof | 3/3 | Complete | 2026-03-24 |
-| 4. Documentation and Strategy Publication | 0/3 | Not started | - |
+| 4. Documentation and Strategy Publication | 3/3 | Complete | 2026-03-24 |
 | 5. Optimization Gate | 0/3 | Not started | - |

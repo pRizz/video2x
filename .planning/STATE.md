@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-03-24)
 
 **Core value:** Make macOS a first-class, convenient, GPU-capable target for Video2X instead of an afterthought.
-**Current focus:** Phase 4 - Documentation and Strategy Publication
+**Current focus:** Phase 5 - Optimization Gate
 
 ## Current Position
 
-Phase: 4 of 5 (Documentation and Strategy Publication)
+Phase: 5 of 5 (Optimization Gate)
 Plan: Not started
-Status: Phase 3 verified complete; Phase 4 planning is next
-Last activity: 2026-03-24 - Verified Phase 3 after executing all three plans and proving the macOS smoke, device-list, and sample-workload flow against the real repo state
+Status: Phase 4 verified complete; Phase 5 planning is next
+Last activity: 2026-03-24 - Verified Phase 4 after executing all three plans and publishing the first-class macOS docs-book surface plus the MoltenVK-first GPU strategy
 
-Progress: [██████░░░░] 60%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
-- Average duration: 6 min
-- Total execution time: 1.0 hours
+- Total plans completed: 12
+- Average duration: 7 min
+- Total execution time: 1.4 hours
 
 **By Phase:**
 
@@ -30,11 +30,12 @@ Progress: [██████░░░░] 60%
 | 1 | 3 | 3 min | 1 min |
 | 2 | 3 | 30 min | 10 min |
 | 3 | 3 | 27 min | 9 min |
+| 4 | 3 | 23 min | 8 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (19 min), 02-03 (4 min), 03-01 (8 min), 03-02 (8 min), 03-03 (10 min)
-- Trend: Stable at higher complexity
-- Latest execution: 03-03 (10 min, 4 tasks, 5 files)
+- Last 5 plans: 03-02 (8 min), 03-03 (10 min), 04-01 (6 min), 04-02 (7 min), 04-03 (10 min)
+- Trend: Stable
+- Latest execution: 04-03 (10 min, 3 tasks, 6 files)
 
 ## Accumulated Context
 
@@ -59,6 +60,9 @@ Recent decisions affecting current work:
 - Phase 3 plan 03-01: Make built-binary macOS runtime proof independent of the caller's working directory through executable-relative resource lookup, with installed-artifact hardening as secondary.
 - Phase 3 plan 03-02: Make Vulkan portability enumeration explicit on macOS and emit actionable MoltenVK-oriented failure guidance instead of generic instance-creation errors.
 - Phase 3 plan 03-03: Publish `just`-level macOS smoke, device-list, and Real-ESRGAN sample validation commands backed by a repo-owned script and locally generated sample media.
+- Phase 4 plan 04-01: Put the validated Apple Silicon build workflow into `docs/book` directly instead of leaving macOS guidance scattered across root docs.
+- Phase 4 plan 04-02: Publish Vulkan SDK plus MoltenVK as the explicit first-class macOS GPU strategy and document the portability contract plus future evidence gate.
+- Phase 4 plan 04-03: Make the docs book the discoverable home for the macOS guide and GPU strategy, then align README and CONTRIBUTING back to that published surface.
 
 ### Pending Todos
 
@@ -66,13 +70,14 @@ None yet.
 
 ### Blockers/Concerns
 
+- `mdbook` is not installed on the validation host, so Phase 4 used structural documentation checks instead of a local HTML book build.
 - The validation host currently loads MoltenVK from both `/opt/homebrew` and `/usr/local`, which emits duplicate `MVKBlockObserver` warnings even though runtime validation passed.
-- The validated install step still prints non-blocking `install_name_tool` rpath-deletion errors on third-party dylibs during macOS builds and should be monitored in later documentation or cleanup work.
+- The validated install step still prints non-blocking `install_name_tool` rpath-deletion errors on third-party dylibs during macOS builds; the new GPU-strategy docs record this caveat, but the underlying host behavior remains.
 - Vendored macOS configure still depends on fuller local `third_party/boost` checkout materialization; this did not block the Phase 2 system-path requirements but remains a local fallback caveat.
-- Phase 4 has not been planned yet, so the next workflow step is to create the Phase 4 plan set.
+- Phase 5 has not been planned yet, so the next workflow step is to create the Phase 5 plan set.
 
 ## Session Continuity
 
-Last session: 2026-03-24 18:03
-Stopped at: Verified Phase 3 and prepared handoff to Phase 4 planning
-Resume file: .planning/phases/03-runtime-smoke-and-gpu-proof/03-VERIFICATION.md
+Last session: 2026-03-25 00:18
+Stopped at: Verified Phase 4 and prepared handoff to Phase 5 planning
+Resume file: .planning/phases/04-documentation-and-strategy-publication/04-VERIFICATION.md
