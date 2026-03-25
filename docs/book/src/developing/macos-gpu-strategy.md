@@ -32,3 +32,36 @@ Native Metal remains a possible future direction, but it is not the first move f
 - The repo now has verified Apple Silicon runtime proof through the portability path, which means the portability route is no longer hypothetical.
 
 For the current milestone, the burden of proof is on the existing Vulkan path to fail materially before a deeper Metal investment becomes justified.
+
+## Portability Requirements
+
+The macOS GPU path is only valid when the Vulkan portability contract is satisfied.
+
+- `VK_KHR_portability_enumeration` must be available and enabled during instance creation on macOS
+- MoltenVK or equivalent Vulkan portability tooling must be installed and visible to the loader
+- the validated runtime proof remains the built-binary-first command set:
+  - `just smoke-macos`
+  - `just list-devices-macos`
+  - `just sample-macos-realesrgan`
+
+Those commands are not optional polish. They are the current proof that the built CLI launches, enumerates a GPU through the portability layer, and completes a short ncnn-backed sample workload on Apple Silicon.
+
+## Current Caveats
+
+The portability route is working, but contributors should keep the current caveats in mind:
+
+- a duplicate MoltenVK install can emit the `MVKBlockObserver` warning seen during Phase 3 validation when both `/opt/homebrew` and `/usr/local` provide `libMoltenVK.dylib`
+- the install step still emits non-fatal `install_name_tool` rpath noise on some third-party dylibs, even though the repo-owned artifacts validate afterward
+- the built binary is the canonical proof target; install-tree validation is still secondary
+- `libplacebo` is not the canonical macOS proof path for this fork today
+
+These caveats are documentation boundaries, not reasons to abandon the portability route immediately.
+
+## Future Evidence Gate
+
+Future backend work should stay evidence-driven.
+
+- **VideoToolbox** is a possible optimization path, but only after measured end-to-end limitations show that decode or encode overhead is the real bottleneck.
+- **Native Metal** becomes worth exploring only if the MoltenVK route shows missing capability, unacceptable performance, or maintenance friction that cannot be solved within the Vulkan-oriented stack.
+
+Phase 5 is where this fork should record that evidence and decide whether deeper Apple-specific work is justified. Phase 4 only defines the current strategy and the warning signs that would force a reevaluation.
