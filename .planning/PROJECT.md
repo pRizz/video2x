@@ -47,15 +47,21 @@ The GPU question is the biggest technical unknown. The existing codebase is cent
 - **Delivery strategy**: Incremental macOS GPU enablement — phase 1 can start with the most practical bridge path and only pursue deeper Metal-native architecture if justified by research
 - **Ownership**: User fork first — decisions can optimize for experimentation and clarity before upstream coordination
 
+## Current Planning Continuity
+
+- **Next milestone recommendation**: Optimize and characterize the current MoltenVK-first Apple Silicon path before broadening into CI, packaging, or deeper backend work.
+- **Deferred next-up options**: macOS CI is recommended after one optimization-focused pass; packaging, VideoToolbox experiments, and native Metal exploration stay deferred until their evidence gates are met.
+- **Support boundary still in force**: latest macOS on Apple Silicon only, Vulkan SDK plus MoltenVK as the canonical GPU path, and `just` plus shared CMake presets as the contributor workflow.
+
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Treat macOS as a first-class target | The main current pain is an unclear macOS workflow and second-class platform treatment | — Pending |
-| Use `just` as the canonical developer interface | Contributors should not need to memorize raw CMake, packaging, or bootstrap steps | — Pending |
-| Target Apple Silicon on latest macOS only | Narrowing the platform matrix reduces uncertainty and speeds initial delivery | — Pending |
-| Take an incremental GPU path | A portability bridge may unlock usable macOS support sooner than a full native backend rewrite | — Pending |
-| Defer packaging/distribution and likely defer CI | The first milestone should prove local workflow and technical direction before broadening scope | — Pending |
+| Treat macOS as a first-class target | The main current pain is an unclear macOS workflow and second-class platform treatment | Adopted in v1 and retained for the next milestone |
+| Use `just` as the canonical developer interface | Contributors should not need to memorize raw CMake, packaging, or bootstrap steps | Adopted in v1 |
+| Target Apple Silicon on latest macOS only | Narrowing the platform matrix reduces uncertainty and speeds initial delivery | Adopted in v1 and retained |
+| Take an incremental GPU path | A portability bridge may unlock usable macOS support sooner than a full native backend rewrite | Adopted; next milestone optimizes the MoltenVK-first path before any Metal spike |
+| Defer packaging/distribution and likely defer CI | The first milestone should prove local workflow and technical direction before broadening scope | Packaging remains deferred; CI deferred until after one optimization-focused pass |
 
 ---
-*Last updated: 2026-03-24 after initialization*
+*Last updated: 2026-03-25 after Phase 5 recommendation*
