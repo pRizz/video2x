@@ -70,3 +70,42 @@ just build-macos-vendored-debug
 ```
 
 Vendored mode still depends on a populated checkout under `third_party/`. If configure fails inside `third_party/boost`, refresh the local vendored checkout state before assuming the preset-backed workflow is broken.
+
+## 6. Validate the Runtime Contract
+
+After the canonical Release build succeeds, validate the built binary from the repository root:
+
+```bash
+just smoke-macos
+just list-devices-macos
+just sample-macos-realesrgan
+```
+
+These commands target the built `build/macos-system-release/video2x` binary first.
+
+- `just smoke-macos` proves the CLI launches successfully on macOS.
+- `just list-devices-macos` proves the Vulkan portability stack is working end to end and that the built CLI can enumerate at least one detected GPU.
+- `just sample-macos-realesrgan` is the canonical sample workload for this fork's current macOS proof path. It uses the validated Real-ESRGAN processor, generates a short local input clip with `ffmpeg` when needed, and verifies the output with `ffprobe`.
+
+If you need to probe the install tree as a secondary check, call the validation script directly:
+
+```bash
+./scripts/macos_runtime_validation.sh smoke --binary-mode installed
+```
+
+Do not treat `libplacebo` as the canonical macOS proof path until it has been revalidated locally.
+
+## 7. Current Non-Goals and Caveats
+
+The current v1 milestone is intentionally narrower than a full packaging or release effort:
+
+- macOS packaging is out of scope for v1.
+- Required macOS CI is out of scope for v1.
+- Intel Mac support is out of scope for this fork.
+- Older macOS releases are out of scope; the target is the latest macOS on Apple Silicon.
+
+Keep the following caveats in mind while using the build guide:
+
+- Vendored mode is a fallback, not the primary workflow.
+- `third_party/boost` checkout state can still matter when vendored configure fails locally.
+- The built binary is the canonical validation target; install-tree checks are secondary.
