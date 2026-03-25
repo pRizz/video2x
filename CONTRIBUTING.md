@@ -39,6 +39,8 @@ just build-macos-vendored-release
 
 Vendored mode still depends on a populated repo checkout under `third_party/`. If vendored configure fails in `third_party/boost` while looking for targets such as `Boost::intrusive` or `Boost::smart_ptr`, refresh the local vendored checkout before assuming the preset-backed flow is broken. This document stays scoped to prerequisite setup and build execution; later phases can expand troubleshooting and platform-specific validation.
 
+The docs book mirrors this build contract in [docs/book/src/building/macos.md](docs/book/src/building/macos.md). The current backend direction for this fork is documented separately in [docs/book/src/developing/macos-gpu-strategy.md](docs/book/src/developing/macos-gpu-strategy.md): Vulkan SDK plus MoltenVK is the first-class macOS GPU path until evidence justifies deeper Apple-specific work.
+
 ## Canonical macOS Runtime Validation
 
 After `just configure-macos-system-release` and `just build-macos-system-release`, validate the runtime contract from the repo root with the built binary first:

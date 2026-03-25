@@ -126,7 +126,7 @@ These Phase 3 commands target the built `build/macos-system-release/video2x` bin
 
 `just list-devices-macos` is expected to pass only when the built binary exists locally and the macOS Vulkan portability stack is working end to end: MoltenVK or equivalent tooling is installed, the loader advertises `VK_KHR_portability_enumeration`, and the command prints at least one detected GPU name before exiting `0`. `just sample-macos-realesrgan` is the canonical sample workload because it uses the validated ncnn-backed Real-ESRGAN path, generates a short local clip with `ffmpeg` when you do not supply one, and confirms the output video with `ffprobe`. The repo does not assume `data/standard-test.mp4` exists for this proof flow, and `libplacebo` remains optional rather than the canonical macOS validation target until it is revalidated locally.
 
-For the contributor-facing workflow surface, see [CONTRIBUTING.md](CONTRIBUTING.md). The docs book's build index also calls out this current macOS boundary while a fuller first-class macOS guide is deferred to a later phase.
+For the contributor-facing workflow surface, see [CONTRIBUTING.md](CONTRIBUTING.md). The docs book now includes the first-class [macOS build guide](docs/book/src/building/macos.md) and the initial [macOS GPU strategy](docs/book/src/developing/macos-gpu-strategy.md), which document the same Apple Silicon command surface and the Vulkan SDK plus MoltenVK path this fork currently treats as canonical.
 
 ## [📦 Container Image](https://docs.video2x.org/running/container.html)
 
