@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: macOS Toolchain Bring-Up** - Add explicit Apple Silicon dependency validation and build paths
 - [x] **Phase 3: Runtime Smoke and GPU Proof** - Prove the built macOS binary runs and reaches the intended GPU path
 - [x] **Phase 4: Documentation and Strategy Publication** - Publish first-class macOS docs and the initial GPU strategy
-- [ ] **Phase 5: Optimization Gate** - Decide what deeper macOS performance or backend work is actually justified
+- [x] **Phase 5: Optimization Gate** - Decide what deeper macOS performance or backend work is actually justified
 
 ## Phase Details
 
@@ -92,9 +92,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: Capture measured or observed limitations in the initial Apple Silicon bring-up
-- [ ] 05-02: Evaluate optional follow-up paths such as VideoToolbox tuning or native Metal spikes against explicit criteria
-- [ ] 05-03: Record next-milestone recommendations and support boundaries in planning docs
+- [x] 05-01: Capture measured or observed limitations in the initial Apple Silicon bring-up
+- [x] 05-02: Evaluate optional follow-up paths such as VideoToolbox tuning or native Metal spikes against explicit criteria
+- [x] 05-03: Record next-milestone recommendations and support boundaries in planning docs
 
 ## Progress
 
@@ -107,4 +107,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. macOS Toolchain Bring-Up | 3/3 | Complete | 2026-03-24 |
 | 3. Runtime Smoke and GPU Proof | 3/3 | Complete | 2026-03-24 |
 | 4. Documentation and Strategy Publication | 3/3 | Complete | 2026-03-24 |
-| 5. Optimization Gate | 0/3 | Not started | - |
+| 5. Optimization Gate | 3/3 | Complete | 2026-03-25 |

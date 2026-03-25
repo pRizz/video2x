@@ -26,7 +26,7 @@
 
 - [x] **GPU-01**: Project docs define the initial macOS GPU strategy around Vulkan SDK and MoltenVK and explain why it is the first path
 - [x] **GPU-02**: Project docs and validation flow call out the Vulkan portability requirements that must be satisfied on macOS
-- [ ] **GPU-03**: Project records the conditions that would justify deeper native Metal exploration after the initial bring-up
+- [x] **GPU-03**: Project records the conditions that would justify deeper native Metal exploration after the initial bring-up
 
 ### Documentation
 
@@ -66,7 +66,7 @@
 | VAL-03 | Phase 3 | Complete |
 | GPU-01 | Phase 4 | Complete |
 | GPU-02 | Phase 3 | Complete |
-| GPU-03 | Phase 5 | Pending |
+| GPU-03 | Phase 5 | Complete |
 | DOC-01 | Phase 4 | Complete |
 | DOC-02 | Phase 4 | Complete |
 
@@ -77,4 +77,4 @@
 
 ---
 *Requirements defined: 2026-03-24*
-*Last updated: 2026-03-24 after Phase 4 verification*
+*Last updated: 2026-03-25 after Phase 5 verification*
